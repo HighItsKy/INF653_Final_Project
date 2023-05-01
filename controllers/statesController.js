@@ -1,15 +1,34 @@
-/*const data = {
-    states: require('../model/states.json'),
-    setStates: function(data) {this.states = data}
-} */
-
+const data = require('../model/statesData.json');
 const State = require('../model/State');
+const { mongo } = require('mongoose');
 
 const getAllStates = async (req, res) =>{
     //res.json(data.states);
-    const states = await State.find();
+    //console.log(data);
+    const states = await State.find(); //Retrieves all stateCodes and funfacts from MongoDB.
     if(!states) return res.status(204).json({'message': 'No states found.'});
-    res.json(states);
+    
+    //Loop through statesData.json
+    //console.log(states.find(obj));
+    
+    //let state = states.find(state => state.stateCode === "OK");
+    //console.log(state);
+    
+    const resultStates = [];
+    //console.log(data);
+    //Loops through each state in statesData.
+    for(let i = 0; i < data.length; i++){
+        //Loops through each of the data in MongoDB
+        for(let j = 0; j < states.length; j++){
+            if(data[i].code === states[j].stateCode){ //If the code from statesData matches stateCode from MongoDB.
+                //console.log(states[j].stateCode);
+                resultStates.push({...data[i], funfacts: states[j].funfacts});
+            } 
+        }
+        resultStates.push({...data[i]});
+    }
+    //console.log(resultStates);
+    res.json(resultStates);
 }
 
 //Creates a new funfact.
