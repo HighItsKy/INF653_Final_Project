@@ -4,15 +4,15 @@ const statesController = require('../../controllers/statesController');
 
 router.route('/')
     .get(statesController.getAllStates)
-    .post(statesController.createNewState)
-    .put(statesController.updateState)
-    .delete(statesController.deleteState);
 
 router.route('/:state')
     .get(statesController.getState);
 
 router.route('/:state/funfact')
-    .get(statesController.getFunfact);
+    .get(statesController.getFunfact)
+    .patch(statesController.updateFunfact)
+    .post(statesController.createNewFunfact)
+    .delete(statesController.deleteFunFact);
 
 router.route('/:state/capital')
     .get(statesController.getCapital);
